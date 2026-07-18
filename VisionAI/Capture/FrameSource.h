@@ -6,6 +6,8 @@
 
 #include <functional>
 #include <mutex>
+#include <atomic>
+#include <cstdint>
 
 namespace vai {
 
@@ -27,6 +29,10 @@ public:
     // Returns a copy handle to the latest Bgra8 SoftwareBitmap, or nullptr.
     winrt::Windows::Graphics::Imaging::SoftwareBitmap LatestFrame();
 
+    // Monotonic id incremented on every arrived frame; lets a consumer skip
+    // work when no new frame is available.
+    uint64_t FrameId() const { return frameId_.load(std::memory_order_acquire); }
+
 private:
     void OnFrameArrived(
         winrt::Windows::Media::Capture::Frames::MediaFrameReader const& sender,
@@ -38,6 +44,7 @@ private:
 
     std::mutex                                                mtx_;
     winrt::Windows::Graphics::Imaging::SoftwareBitmap         latest_{ nullptr };
+    std::atomic<uint64_t>                                     frameId_{ 0 };
     bool                                                      running_ = false;
 };
 

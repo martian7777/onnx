@@ -34,6 +34,9 @@ public:
                                int strideBytes, PixelFormat fmt,
                                double* inferMs = nullptr);
 
+    // Live-adjustable confidence threshold (e.g. driven by a UI slider).
+    void SetConfidence(float t) { opts_.confThreshold = t; }
+
     // Human-readable execution target, e.g. "DirectML – NVIDIA GeForce RTX 4060"
     // or "CPU". Valid after Load().
     const std::wstring& HardwareTarget() const { return hardwareTarget_; }

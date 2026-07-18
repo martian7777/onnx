@@ -69,6 +69,7 @@ void FrameSource::OnFrameArrived(MediaFrameReader const& sender,
         std::lock_guard<std::mutex> lk(mtx_);
         latest_ = bmp;   // replace; previous frame dropped
     }
+    frameId_.fetch_add(1, std::memory_order_release);
     if (OnFrame) OnFrame();
 }
 
