@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VisionAI", "VisionAI\VisionAI.vcxproj", "{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InferenceTest", "InferenceTest\InferenceTest.vcxproj", "{4B1D9E2A-1C3F-4E77-9A11-0C2F7B8E1001}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+		Debug|ARM64 = Debug|ARM64
+		Release|ARM64 = Release|ARM64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Debug|x64.ActiveCfg = Debug|x64
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Debug|x64.Build.0 = Debug|x64
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Debug|x64.Deploy.0 = Debug|x64
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Release|x64.ActiveCfg = Release|x64
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Release|x64.Build.0 = Release|x64
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Release|x64.Deploy.0 = Release|x64
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Debug|ARM64.Build.0 = Debug|ARM64
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Release|ARM64.ActiveCfg = Release|ARM64
+		{7C2E9B34-5A18-4D6E-9F21-3B4C7D8E2200}.Release|ARM64.Build.0 = Release|ARM64
+		{4B1D9E2A-1C3F-4E77-9A11-0C2F7B8E1001}.Debug|x64.ActiveCfg = Debug|x64
+		{4B1D9E2A-1C3F-4E77-9A11-0C2F7B8E1001}.Debug|x64.Build.0 = Debug|x64
+		{4B1D9E2A-1C3F-4E77-9A11-0C2F7B8E1001}.Release|x64.ActiveCfg = Release|x64
+		{4B1D9E2A-1C3F-4E77-9A11-0C2F7B8E1001}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
