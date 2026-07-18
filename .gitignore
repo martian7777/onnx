@@ -1,0 +1,62 @@
+# ---- Build output ----
+# Custom build/output dirs used by this solution (OutDir/IntDir in the .vcxproj)
+build/
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+ARM64/
+Generated Files/
+
+# ---- MSBuild / C++ intermediates ----
+*.obj
+*.pch
+*.ipch
+*.pdb
+*.idb
+*.ipdb
+*.iobj
+*.tlog
+*.lastbuildstate
+*.log
+*.exp
+*.ilk
+*.res
+*.tlb
+*.winmd
+*.pri
+*.recipe
+*.rsp
+*.cache
+*.manifest
+!Package.appxmanifest
+*.appx
+*.msix
+*.appxsym
+*.appxupload
+
+# ---- NuGet ----
+packages/
+*.nupkg
+project.assets.json
+*.nuget.g.props
+*.nuget.g.targets
+
+# ---- Visual Studio ----
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.opendb
+
+# ---- Misc / debug ----
+startup.log
+
+# ---- Python (model export tooling) ----
+__pycache__/
+*.pyc
+*.pt

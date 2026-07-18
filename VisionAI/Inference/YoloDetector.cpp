@@ -56,7 +56,7 @@ bool YoloDetector::Load(const Options& opts) {
                 throw std::runtime_error("DML EP unavailable: " + msg);
             }
             usingDirectML_  = true;
-            hardwareTarget_ = L"DirectML – " + QueryAdapterName(opts_.deviceId);
+            hardwareTarget_ = L"DirectML - " + QueryAdapterName(opts_.deviceId);
         } else {
             usingDirectML_  = false;
             hardwareTarget_ = L"CPU";
