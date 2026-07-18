@@ -85,7 +85,6 @@
 
   <!-- XAML + WinRT type definitions -->
   <ItemGroup>
-    <Midl Include="App.idl" />
     <Midl Include="MainWindow.idl" />
   </ItemGroup>
   <ItemGroup>
