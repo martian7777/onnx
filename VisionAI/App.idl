@@ -1,0 +1,7 @@
+namespace VisionAI
+{
+    runtimeclass App : Microsoft.UI.Xaml.Application
+    {
+        App();
+    }
+}
