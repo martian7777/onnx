@@ -1,4 +1,0 @@
-E:\onnx\InferenceTest\build\x64\Release\InferenceTest\DirectML.dll
-E:\onnx\InferenceTest\build\x64\Release\InferenceTest\DirectML.pdb
-E:\onnx\InferenceTest\build\x64\Release\InferenceTest\onnxruntime.dll
-E:\onnx\InferenceTest\build\x64\Release\InferenceTest\onnxruntime_providers_shared.dll
