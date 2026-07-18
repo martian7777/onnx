@@ -1,4 +1,4 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # 🧠 VisionAI
 
@@ -86,25 +86,25 @@ VisionAI is structured as a **three-thread pipeline** with strictly decoupled co
 
 ```mermaid
 graph TD
-    subgraph "Thread 1 — Camera Capture"
-        cam["🎥 Webcam<br/>(MediaFrameReader)"] -->|"Bgra8 SoftwareBitmap"| fs["FrameSource<br/><i>Drop-frame buffer</i>"]
+    subgraph "Thread 1 - Camera Capture"
+        cam["Webcam / MediaFrameReader"] -->|"Bgra8 SoftwareBitmap"| fs["FrameSource"]
     end
 
-    subgraph "Thread 2 — Inference Worker"
-        fs -->|"LatestFrame()"| worker["WorkerLoop"]
+    subgraph "Thread 2 - Inference Worker"
+        fs -->|"LatestFrame"| worker["WorkerLoop"]
         worker -->|"Raw pixel buffer"| det["YoloDetector"]
         det -->|"1. Letterbox preprocess"| ort["ONNX Runtime"]
-        ort -->|"2. DirectML execution"| gpu["🖥️ GPU (DX12)"]
+        ort -->|"2. DirectML execution"| gpu["GPU - DX12"]
         gpu -->|"3. Output tensors"| det
         det -->|"4. NMS postprocess"| worker
-        worker -->|"Detections + latency"| stats["Stats<br/><i>Telemetry tracker</i>"]
+        worker -->|"Detections + latency"| stats["Stats / Telemetry"]
     end
 
-    subgraph "Thread 3 — UI (MainWindow)"
+    subgraph "Thread 3 - UI MainWindow"
         stats -->|"DispatcherQueue"| win["WinUI 3 Window"]
         fs -->|"DispatcherQueue"| win
-        win --> canvas["📐 Bounding box overlays"]
-        win --> panel["📊 Performance panel"]
+        win --> canvas["Bounding box overlays"]
+        win --> panel["Performance panel"]
         win -->|"Confidence slider"| worker
     end
 ```
@@ -129,7 +129,7 @@ Input Frame (Bgra8 or Rgb8)
     │
     ▼
 ┌─────────────────────────────┐
-│  1. Letterbox Preprocessing │  Nearest-neighbor resize to 640×640
+│  1. Letterbox Preprocessing │  Nearest-neighbor resize to 640x640
 │     (YoloDetector::Preprocess) │  with gray padding (114/255), then
 │                             │  normalized to [0,1] planar CHW float32
 └─────────────────────────────┘
@@ -137,15 +137,15 @@ Input Frame (Bgra8 or Rgb8)
     ▼
 ┌─────────────────────────────┐
 │  2. ONNX Runtime Session    │  Session::Run() on the DirectML EP
-│     (DirectML → DX12 GPU)   │  Input:  [1, 3, 640, 640]  float32
+│     (DirectML -> DX12 GPU)  │  Input:  [1, 3, 640, 640]  float32
 │                             │  Output: [1, 84, 8400]      float32
 └─────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────┐
-│  3. Postprocessing          │  Decode anchors → best-class selection
-│     (YoloDetector::Postprocess) │  → un-letterbox to original coords
-│                             │  → clamp to frame bounds
+│  3. Postprocessing          │  Decode anchors -> best-class selection
+│     (YoloDetector::Postprocess) │  -> un-letterbox to original coords
+│                             │  -> clamp to frame bounds
 └─────────────────────────────┘
     │
     ▼
@@ -228,11 +228,9 @@ python tools/get_model.py
 python tools/get_model_cpu.py
 ```
 
-> [!NOTE]
-> The CPU export script installs a lightweight CPU-only PyTorch wheel (~200 MB vs ~2 GB for CUDA) and exports the model directly into `VisionAI/Assets/yolov8n.onnx`.
+> **Note:** The CPU export script installs a lightweight CPU-only PyTorch wheel (~200 MB vs ~2 GB for CUDA) and exports the model directly into `VisionAI/Assets/yolov8n.onnx`.
 
-> [!TIP]
-> If the model file is already present in `VisionAI/Assets/yolov8n.onnx`, you can skip this step entirely.
+> **Tip:** If the model file is already present in `VisionAI/Assets/yolov8n.onnx`, you can skip this step entirely.
 
 ### Step 2 — Build & Launch
 
@@ -275,8 +273,7 @@ Detections (conf >= 0.25):
   person         0.34  [x=80 y=232 w=122 h=502]
 ```
 
-> [!NOTE]
-> The first inference run is always slower (GPU shader compilation / warm-up). Subsequent runs reflect steady-state performance.
+> **Note:** The first inference run is always slower (GPU shader compilation / warm-up). Subsequent runs reflect steady-state performance.
 
 ---
 
@@ -290,17 +287,16 @@ Detections (conf >= 0.25):
 | `Microsoft.WindowsAppSDK` | 1.8.260710003 | WinUI 3 controls, windowing, and Fluent Design |
 | `Microsoft.ML.OnnxRuntime.DirectML` | 1.24.4 | ONNX Runtime with DirectML execution provider |
 
-> [!IMPORTANT]
-> The Windows App SDK bundles its own older ONNX Runtime (1.23). The build system includes a custom MSBuild target (`ForceOnnxRuntimeVersion`) that overwrites those DLLs with the 1.24 build to prevent version conflicts. Additionally, `onnxruntime.dll` is **delay-loaded** so the correct app-local version is resolved at startup.
+> **Important:** The Windows App SDK bundles its own older ONNX Runtime (1.23). The build system includes a custom MSBuild target (`ForceOnnxRuntimeVersion`) that overwrites those DLLs with the 1.24 build to prevent version conflicts. Additionally, `onnxruntime.dll` is **delay-loaded** so the correct app-local version is resolved at startup.
 
 ### Build Configurations
 
 | Configuration | Platform | Notes |
 |---|---|---|
-| Debug \| x64 | x64 | Full debug symbols, no optimizations |
-| Release \| x64 | x64 | Full optimizations (`/O2`), whole-program optimization |
-| Debug \| ARM64 | ARM64 | For Windows on Arm devices |
-| Release \| ARM64 | ARM64 | Optimized ARM64 build |
+| Debug x64 | x64 | Full debug symbols, no optimizations |
+| Release x64 | x64 | Full optimizations (`/O2`), whole-program optimization |
+| Debug ARM64 | ARM64 | For Windows on Arm devices |
+| Release ARM64 | ARM64 | Optimized ARM64 build |
 
 ### Key Design Decisions
 
@@ -308,7 +304,7 @@ Detections (conf >= 0.25):
 The entire UI is constructed programmatically in `MainWindow::BuildUi()`. This eliminates the XAML markup compiler, reduces build complexity, and gives full C++ control over the widget tree.
 
 #### Self-Contained / Unpackaged Deployment
-The app uses `<WindowsPackageType>None</WindowsPackageType>` and `<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>`, meaning all WinUI 3 runtime DLLs are copied next to the executable. No MSIX packaging, no Windows App Runtime installer, no Store certification required.
+The app uses `WindowsPackageType=None` and `WindowsAppSDKSelfContained=true`, meaning all WinUI 3 runtime DLLs are copied next to the executable. No MSIX packaging, no Windows App Runtime installer, no Store certification required.
 
 #### Automatic DirectML-to-CPU Fallback
 If the DirectML execution provider fails to initialize (e.g., no DX12 GPU, driver issues), `YoloDetector::Load()` automatically retries with CPU-only inference. The app always works.
@@ -346,37 +342,41 @@ InferenceTest.exe [model_path] [image_path] [labels_path]
 ## 🔧 Troubleshooting
 
 <details>
-<summary><strong>Build error: NuGet packages not restored</strong></summary>
-
-Right-click the solution in Visual Studio → **Restore NuGet Packages**. If that fails, delete the `packages/` directory and the `build/` directory, then retry.
+<summary><b>Build error: NuGet packages not restored</b></summary>
+<br/>
+Right-click the solution in Visual Studio → <b>Restore NuGet Packages</b>. If that fails, delete the <code>packages/</code> directory and the <code>build/</code> directory, then retry.
 </details>
 
 <details>
-<summary><strong>Runtime error: "Model load failed"</strong></summary>
-
-Ensure `yolov8n.onnx` exists in `VisionAI/Assets/`. Run `python tools/get_model_cpu.py` from the repository root to export the model.
+<summary><b>Runtime error: "Model load failed"</b></summary>
+<br/>
+Ensure <code>yolov8n.onnx</code> exists in <code>VisionAI/Assets/</code>. Run <code>python tools/get_model_cpu.py</code> from the repository root to export the model.
 </details>
 
 <details>
-<summary><strong>Camera not detected / "Camera error"</strong></summary>
-
-- Ensure a webcam is connected and not in use by another application
-- Check that camera access is enabled in **Windows Settings → Privacy → Camera**
-- Try unplugging and reconnecting the camera
+<summary><b>Camera not detected / "Camera error"</b></summary>
+<br/>
+<ul>
+<li>Ensure a webcam is connected and not in use by another application</li>
+<li>Check that camera access is enabled in <b>Windows Settings → Privacy → Camera</b></li>
+<li>Try unplugging and reconnecting the camera</li>
+</ul>
 </details>
 
 <details>
-<summary><strong>Low FPS / Poor performance</strong></summary>
-
-- Verify DirectML is active by checking the **HARDWARE TARGET** label in the telemetry panel (it should show your GPU name, e.g., "DirectML - NVIDIA GeForce RTX 4060")
-- If it shows "CPU", your GPU driver may not support DirectX 12. Update your GPU drivers
-- Close other GPU-intensive applications
+<summary><b>Low FPS / Poor performance</b></summary>
+<br/>
+<ul>
+<li>Verify DirectML is active by checking the <b>HARDWARE TARGET</b> label in the telemetry panel (it should show your GPU name, e.g., "DirectML - NVIDIA GeForce RTX 4060")</li>
+<li>If it shows "CPU", your GPU driver may not support DirectX 12. Update your GPU drivers</li>
+<li>Close other GPU-intensive applications</li>
+</ul>
 </details>
 
 <details>
-<summary><strong>ONNX Runtime DLL version conflict</strong></summary>
-
-The Windows App SDK bundles an older ORT DLL. The build system's `ForceOnnxRuntimeVersion` target should handle this automatically. If you still see issues, verify that `onnxruntime.dll` in your output directory (`build/x64/Release/VisionAI/`) is version 1.24.4.
+<summary><b>ONNX Runtime DLL version conflict</b></summary>
+<br/>
+The Windows App SDK bundles an older ORT DLL. The build system's <code>ForceOnnxRuntimeVersion</code> target should handle this automatically. If you still see issues, verify that <code>onnxruntime.dll</code> in your output directory (<code>build/x64/Release/VisionAI/</code>) is version 1.24.4.
 </details>
 
 ---
@@ -393,8 +393,7 @@ Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md)
 4. Push to your branch (`git push origin feature/my-feature`)
 5. Open a Pull Request
 
-> [!TIP]
-> Check the [Issues](https://github.com/martian7777/onnx/issues) page for open tasks and feature requests. Issues labeled `good first issue` are a great starting point.
+> **Tip:** Check the [Issues](https://github.com/martian7777/onnx/issues) page for open tasks and feature requests. Issues labeled `good first issue` are a great starting point.
 
 ---
 
@@ -435,4 +434,3 @@ modify, merge, publish, distribute, sublicense, and/or sell copies.
 <div align="center">
 <sub>Built with ❤️ for the Windows AI ecosystem</sub>
 </div>
-]]>
