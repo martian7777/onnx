@@ -1,3 +1,10 @@
+#ifndef NOMINMAX
+#define NOMINMAX          // keep std::min/std::max from the windows.h macros
+#endif
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
 #include "YoloDetector.h"
 #include "Nms.h"
 

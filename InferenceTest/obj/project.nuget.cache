@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "VlzSMrxSv1A=",
+  "success": true,
+  "projectFilePath": "E:\\onnx\\InferenceTest\\InferenceTest.vcxproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\saqib\\.nuget\\packages\\microsoft.ai.directml\\1.15.4\\microsoft.ai.directml.1.15.4.nupkg.sha512",
+    "C:\\Users\\saqib\\.nuget\\packages\\microsoft.ml.onnxruntime.directml\\1.24.4\\microsoft.ml.onnxruntime.directml.1.24.4.nupkg.sha512"
+  ],
+  "logs": []
+}

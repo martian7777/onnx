@@ -34,6 +34,8 @@
   <PropertyGroup>
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <!-- Native PackageReference: suppress the legacy managed-TFM asset resolver. -->
+    <ResolveNuGetPackages>false</ResolveNuGetPackages>
   </PropertyGroup>
 
   <ItemDefinitionGroup>
